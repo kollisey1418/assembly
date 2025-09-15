@@ -1,19 +1,36 @@
+import tkinter as tk
+from tkinter import ttk, messagebox, simpledialog, filedialog
+
+root = tk.Tk()
+root.title("Driver manage")
+root.geometry("400x400")
+
+
 
 def action_selection():
-    print('''You can choose 1 from 3 functions
-    1 - Creat a new driver
-    2 - Select a shift for a driver
-    3 - Show list of drivers
-    4 - Show list of drivers with shifts''')
-    choice = int(input("Select action: "))
-    return choice
+    label = tk.Label(root, text="You can choose 1 from 3 functions:\n"
+                                "1 - Creat a new driver\n"
+                                "2 - Select a shift for a driver\n"
+                                "3 - Show list of drivers\n"
+                                "4 - Show list of drivers with shifts")
+    label.pack()
+
+
 
 
 def add_information():
-    first = input("Enter driver's first name: ")
-    last = input("Enter driver's last name: ")
-    surn = input("Enter driver's surname: ")
+    first = simpledialog.askstring("Name", "Enter driver's first name: ")
+    last = simpledialog.askstring("Last name", "Enter driver's last name: ")
+    surn = simpledialog.askstring("Surname", "Enter driver's surname: ")
+    messagebox.showinfo(f"Driver added:", "{first} {last} {surn}")
     return first, last, surn
+
+action_selection()
+
+btn = tk.Button(root, text="Create a new driver", command=add_information)
+btn.pack(pady=10)
+root.mainloop()
+
 
 def select_shift(rows):
         print("Select name: ")

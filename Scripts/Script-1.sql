@@ -1,1 +1,1 @@
-select * from shifts s 
+select * from drivers d 
