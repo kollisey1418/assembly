@@ -1,6 +1,6 @@
 from db import get_connection
 from db_repo import insert_driver, insert_shift
-from db_search import search_driver_with_shifts, search_driver
+from db_search import search_driver, search_schedule
 
 
 
@@ -29,7 +29,7 @@ def show_drivers():
             conn.close()
 
 
-def save_shift(driver_str, shift_value, date_date):
+def save_shift(driver_str, shift_value, route_value, date_date):
     try:
         first_name, last_name, surname= driver_str.split()
     except ValueError:
@@ -49,12 +49,23 @@ def save_shift(driver_str, shift_value, date_date):
         driver_id = result[0]
 
         cur.execute(
-            "INSERT INTO shifts (drivers_id, shifts, date) VALUES (%s, %s, %s)", 
-            (driver_id, shift_value, date_date)
+            "INSERT INTO shifts (drivers_id, shifts, route, date) VALUES (%s, %s, %s, %s)", 
+            (driver_id, shift_value, route_value, date_date)
         )
+
         conn.commit()
         print("Driver's shift is save")
     finally:
         cur.close
         conn.close
 
+def show_schedule():
+    conn = get_connection()
+    cur = conn.cursor()
+    try:
+        rows = search_schedule(cur)
+        name = [f"{first} {last} {date} {shift} {route}" for first, last, date, shift, route in rows]
+        return name
+    finally:
+        cur.close()
+        conn.close()

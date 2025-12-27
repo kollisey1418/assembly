@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog, filedialog, Text
-from app_logic import reseption_name, show_drivers, save_shift
+from app_logic import reseption_name, show_drivers, save_shift, show_schedule
 from tkcalendar import Calendar
 from info_wind import sh_info
 import datetime
@@ -58,27 +58,36 @@ def start_app():
 
 
 
-    def select_shift(footer_frame):
-        drivers = show_drivers()
-        ttk.Label(footer_frame, text="Drivers:").pack()
-        combo = ttk.Combobox(footer_frame)
-        combo['values'] = drivers
-        combo
-        combo.pack()
+    #def select_shift(footer_frame):
+     #   drivers = show_drivers()
+      #  ttk.Label(footer_frame, text="Drivers:").pack()
+       # combo = ttk.Combobox(footer_frame)
+        #combo['values'] = drivers
+        #combo
+        #combo.pack()
 
 
     def show_rdirers_ui(parent):
         drivers = show_drivers()
         top = tk.Toplevel(parent)
         top.geometry("400x400")
-        top.title("Rdirers")
+        top.title("Drivers")
         for idx, name in enumerate(drivers, start=1):
             tk.Label(top, text=f"{idx}. {name}").pack()
+
+    def show_schedule_ui(parent):
+        schedule = show_schedule()
+        top = tk.Toplevel(parent)
+        top.geometry("")
+        top.title("Schedule")
+        for name in schedule:
+            tk.Label(top, text=f"{name}").pack()
 
 
 
     tk.Button(top_frame, text="Show drivers", command=lambda: show_rdirers_ui(top_frame)).pack()
     tk.Button(top_frame, text="Shift assignment", command=lambda: AssingShift(top_frame)).pack()
+    tk.Button(top_frame, text="Show schedule", command=lambda: show_schedule_ui(top_frame)).pack()
     root.mainloop()
 
 class AssingShift:
@@ -97,14 +106,22 @@ class AssingShift:
     def select_shift(self):
         drivers = show_drivers()
         shifts = [1,2,3]
+        route = ["Sveti Stefan", "Petrovac", "Lastva", "Braichi", "School-1", "School-2"]
+
         ttk.Label(self.new_window, text="Drivers:").pack()
         self.combo = ttk.Combobox(self.new_window)
         self.combo['values'] = drivers
         self.combo.pack()
+
         ttk.Label(self.new_window, text="Shifts:").pack()
         self.combo2 = ttk.Combobox(self.new_window)
         self.combo2['values'] = shifts
         self.combo2.pack()
+
+        ttk.Label(self.new_window, text="Route line").pack()
+        self.combo3 = ttk.Combobox(self.new_window)
+        self.combo3['values'] = route
+        self.combo3.pack()
 
         date_frame = tk.Frame(self.new_window)
         date_frame.pack()
@@ -137,6 +154,7 @@ class AssingShift:
     def submit(self):
         driver = self.combo.get()
         shift = self.combo2.get()
+        route = self.combo3.get()
         date = self.T.get("1.0", tk.END).strip()
         if date == "select_date":
             print("Date wasn't select")
@@ -145,7 +163,7 @@ class AssingShift:
             Please select date!    
             ''')
             return
-        save_shift(driver, shift, date)
+        save_shift(driver, shift, route, date)
         info_window_ok(self.new_window)
         print("Function ended")
 
