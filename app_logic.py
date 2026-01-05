@@ -64,8 +64,7 @@ def show_schedule():
     cur = conn.cursor()
     try:
         rows = search_schedule(cur)
-        name = [f"{first} {last} {date} {shift} {route}" for first, last, date, shift, route in rows]
-        return name
+        return rows
     finally:
         cur.close()
         conn.close()

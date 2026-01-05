@@ -7,6 +7,7 @@ def search_driver(cur):
 def search_schedule(cur):
     cur.execute('''SELECT drivers.first_name, drivers.last_name, shifts.date, shifts.shifts, shifts.route 
                 FROM drivers 
-                JOIN shifts ON drivers.id=shifts.drivers_ID''')
+                JOIN shifts ON drivers.id=shifts.drivers_ID
+                ORDER BY shifts.date''')
     rows = cur.fetchall()
     return rows

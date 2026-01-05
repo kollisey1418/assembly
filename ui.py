@@ -80,8 +80,20 @@ def start_app():
         top = tk.Toplevel(parent)
         top.geometry("")
         top.title("Schedule")
-        for name in schedule:
-            tk.Label(top, text=f"{name}").pack()
+        
+
+        table = ttk.Treeview(top, columns = ('first', 'last', 'date', 'shifts', 'route'), show = 'headings')
+        table.heading('first', text='First Name')
+        table.heading('last', text = 'Surname')
+        table.heading('date', text = 'Date')
+        table.heading('shifts', text = 'Shift')
+        table.heading('route', text = 'Route')
+        table.pack()
+        print(schedule)
+        for first, last, shifts, date, route in schedule:
+            table.insert(parent = '', index = 0, values = (f'{first} {last} {date} {shifts} {route}'))
+        
+            
 
 
 
@@ -132,7 +144,7 @@ class AssingShift:
         self.data_buton = tk.Button(date_frame, text="Date", command=self.date_selection)
         self.data_buton.pack(side="right")
         tk.Button(self.new_window, text="Save", command=self.submit).pack()
-        
+
 
     def date_selection(self):
         today = datetime.date.today()
